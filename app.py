@@ -1,8 +1,6 @@
-# === File: app.py ===
 from flask import Flask, request, render_template_string
 import pandas as pd
-import webbrowser
-import threading
+import os
 
 app = Flask(__name__)
 
@@ -53,10 +51,7 @@ def home():
             result = f"[❌] HSN Code {code} not found in master data."
     return render_template_string(HTML_TEMPLATE, result=result)
 
-# Open browser automatically
-def open_browser():
-    webbrowser.open_new("http://127.0.0.1:5000/")
-
+# Run the app on the correct host and port for Render
 if __name__ == "__main__":
-    threading.Timer(1.0, open_browser).start()
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))  # Render dynamically assigns PORT
+    app.run(debug=False, host="0.0.0.0", port=port)
